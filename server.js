@@ -8,12 +8,13 @@ var listingData, server;
 
 var requestHandler = function(request, response) {
   var parsedUrl = url.parse(request.url);
-  // Return the directory data at the /listings URL
-  if (parsedUrl.pathname == '/listings') {
+  // Return the directory data at the /listings URL for a GET request
+  if (parsedUrl.pathname == '/listings' && request.method == 'GET') {
+    // Automatically sends a 200 status code
     response.end(listingsData);
   }
   // Otherwise return a 404 error
-  response.writeHead(404, {'Content-Type': 'text/plain'});
+  response.writeHead(404);
   response.end('Bad gateway error');
 };
 
@@ -27,7 +28,7 @@ fs.readFile('listings.json', 'utf8', function(err, data) {
     return;
   }
   listingsData = data;
-  // The server is now started, listening for requests on port 8080
+  // the server is now started, listening for requests on port 8080
   server.listen(port, function() {
     // Once the server is listening, this callback function is executed
     console.log('Server listening on: http://127.0.0.1:' + port);
