@@ -1,6 +1,8 @@
 <!DOCTYPE html>
 <html>
   <head>
+    <script src="https://api.mqcdn.com/sdk/mapquest-js/v1.1.0/mapquest.js"></script>
+    <link type="text/css" rel="stylesheet" href="https://api.mqcdn.com/sdk/mapquest-js/v1.1.0/mapquest.css"/>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
     <link rel="stylesheet" href="style.css">
   </head>
@@ -10,16 +12,41 @@
         <h1>UF Directory App</h1>
       </div>
       <div class="row" ng-controller="ListingsController">
-        <div class="col-md-6">
+        <div class="col-md-6" style="max-height: 80%; overflow: hidden">
           <div class="input-group" id="searchBar">
-            <!-- 
+            <!--
 
-                Implement a way to filter through listings using the search bar 
+                Implement a way to filter through listings using the search bar
 
               -->
             <span class="input-group-addon" id="sizing-addon1"><span class="glyphicon glyphicon-search"></span></span>
-            <input type="text" class="form-control" placeholder="Search">
+            <input type="text" ng-model="searchInput" ng-change="filterListings()" class="form-control" placeholder="Search">
+            <span class="input-group-btn"><button ng-click="adding=!adding" ng-class="{btn: true, 'btn-default': true, 'btn-primary': adding}" type="button"><span class="glyphicon glyphicon-plus"</span></button></span>
           </div>
+          <div ng-class="{'add-form': true, 'form-hidden': !adding}">
+          <h3 style="margin-top:4px">Add a listing</h3>
+          <form>
+            <div class="form-group">
+              <label for="code">Code:</label>
+              <input ng-model="newListingCode" type="text" class="form-control" id="code">
+            </div>
+            <div class="form-group">
+              <label for="name">Name:</label>
+              <input ng-model="newListingName" type="text" class="form-control" id="name">
+            </div>
+            <div class="form-group">
+              <label for="address">Address:</label>
+              <input ng-model="newListingAddress" type="text" class="form-control" id="address">
+            </div>
+            <button ng-click="addListing()" type="submit" class="btn btn-default">Add to List</button>
+          </form>
+        </div>
+          <!--
+
+              Write an HTML form that adds new listings to the directory
+
+            -->
+
           <div class="tableWrapper">
             <table class="table table-striped table-hover">
               <tr>
@@ -27,30 +54,37 @@
                 <th>Building Name</th>
                 <th></th>
               </tr>
-              <!-- 
+              <!--
 
                   Fill in the rest of the table:
                       * populate the rows with the code and name of each listing
                       * include a way to remove individual listings
 
-                --> 
+                -->
+              <tr ng-repeat="listing in filteredListings">
+                <td ng-click="showDetails(listing.index)">{{listing.code}}</td>
+                <td ng-click="showDetails(listing.index)">{{listing.name}}</td>
+                <td><span ng-click="deleteListing(listing.index, $index)" class="glyphicon glyphicon-remove remove-button"</span></td>
+              </tr>
             </table>
           </div>
-          <!-- 
-
-              Write an HTML form that adds new listings to the directory 
-
-            -->
         </div>
         <div class="col-md-6">
           <div class="jumbotron">
-            <h2>Detailed Information</h2>
-            <!-- 
+            <div ng-show="selectedBuilding == undefined">
+              <h2>Detailed Information</h2>
+            </div>
+            <div class="building-details">
+              <h3 ng-bind="selectedBuilding.name"></h3>
+              <h4 ng-show="selectedBuilding.address" ng-bind="selectedBuilding.address"></h4>
+              <h4 ng-hide="selectedBuilding.address"><i>Address not available</i><h4>
+              <iframe my-map style="width:100%" height="350" frameborder="0" scrolling="no" marginheight="0" marginwidth="0" style="border: 1px solid black"></iframe>
+              <!--
 
-              Include a way to display detailed information about an individual listing:
-                   * consider how to use ng-click within the the table to implement this feature
+                Include a way to display detailed information about an individual listing:
+                     * consider how to use ng-click within the the table to implement this feature
 
-             -->
+               -->
           </div>
         </div>
       </div>

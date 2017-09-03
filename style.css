@@ -1,8 +1,51 @@
 #searchBar {
-  margin: 15px 10px;
+  margin: 15px 0px;
 }
 
 .tableWrapper {
   max-height: 400px;
   overflow: auto;
+  margin-bottom: 15px;
+}
+
+.jumbotron {
+  padding-top: 27px;
+}
+
+.add-form {
+  position: absolute;
+  background: #FFF;
+  top: 57px;
+  right:60px;
+  z-index: 100;
+  padding: 10px 15px;
+  margin-bottom: 1.5em;
+  transition: max-height 200ms, padding 200ms, border-color 150ms;
+  overflow: hidden;
+  max-height: 550px;
+  border: 1px solid #CDCDCD;
+  border-radius: 10px 10px;
+}
+
+.form-hidden {
+  padding: 0px;
+  border-color: transparent;
+  max-height:0px;
+}
+
+tr:hover .remove-button {
+  opacity: .8;
+}
+
+
+.remove-button {
+  padding: 5px;
+  opacity: .3;
+  border-radius: 3px;
+  margin: -5px;
+}
+
+.remove-button:hover {
+  background-color: #DDD;
+  cursor:pointer;
 }
