@@ -28,4 +28,3 @@ fs.readFile('listings.json', 'utf8', function(err, data) {
     });
   });
 });
-process.exit();
